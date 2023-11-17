@@ -5,7 +5,7 @@ from common.auth import get_user_or_raise_401
 from data.models import RegisterDataCompany, LoginData
 from routers import helpers
 from routers.helpers import username_exists
-from service import companies_service, login_service
+from services import companies_service, login_service
 
 
 companies_router = APIRouter(prefix='/companies', tags=['Companies'])

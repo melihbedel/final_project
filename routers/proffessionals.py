@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse
 
 from data.models import RegisterDataProfessional
 from routers.helpers import username_exists
-from service import login_service, professionals_service
+from services import login_service, professionals_service
 
 professionals_router = APIRouter(prefix='/professionals', tags=['Professionals'])
 
