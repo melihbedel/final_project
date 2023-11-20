@@ -7,6 +7,9 @@ class Company(BaseModel):
     login_id1: int
 
 
+
+
+
 class Professional(BaseModel):
     id: int or None = None
     first_name: str
@@ -35,11 +38,20 @@ class LoginData(BaseModel):
     username: str
     password: str
 
+
+class LoginDataForToken(BaseModel):
+    id: int or None = None
+    username: str
+    password: str
+    type: int
+
     @classmethod
-    def from_query_result(cls, id, username, password):
+    def from_query_result(cls, id, username, password, type):
         return cls(
             id=id,
             username=username,
             password=password,
-
+            type=type
         )
+
+
