@@ -13,3 +13,5 @@ def create_professional_info(ids):
     data = insert_query('''INSERT INTO professional_info (pro_id) VALUES(?)''',
                         (ids,))
     return data
+
+

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Header, HTTPException
 from starlette.responses import JSONResponse
 
 from data.models import RegisterDataProfessional
@@ -18,3 +18,10 @@ def register(data: RegisterDataProfessional):
         return JSONResponse(status_code=200, content=f'Success registration {data.username}')
 
     return JSONResponse(status_code=400, content=f'{data.username} is already taken!')
+
+
+@professionals_router.get('/professional_info')
+def get_pro(x_token: str = Header(default=None)):
+    if x_token == None:
+        raise HTTPException(status_code=401,
+                            detail='You must be logged in')
