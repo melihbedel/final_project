@@ -31,6 +31,7 @@ class RegisterDataProfessional(BaseModel):
     password: str
     first_name: str
     last_name: str
+    type: int = 0
 
 
 class LoginData(BaseModel):

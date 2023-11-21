@@ -7,3 +7,9 @@ def create_pro(first_name: str, last_name: str, login_id):
                         (first_name, last_name, login_id))
 
     return Professional(id=data, first_name=first_name, last_name=last_name, login_id2=login_id)
+
+
+def create_professional_info(ids):
+    data = insert_query('''INSERT INTO professional_info (pro_id) VALUES(?)''',
+                        (ids,))
+    return data

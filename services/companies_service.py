@@ -1,6 +1,6 @@
 from data.database import insert_query, read_query, update_query
 from data.models import Company
-from data.company_info import CompanyInfo
+from data.company_info import CompanyInfo, CompanyInfoForEdit
 
 
 def create_company(name: str, login_id):
@@ -29,7 +29,7 @@ def company_info(id: int):
     return data
 
 
-def edit_companies(old: CompanyInfo, new: CompanyInfo):
+def edit_companies(old: CompanyInfoForEdit, new: CompanyInfoForEdit):
     print(old)
     edited_company = CompanyInfo(
         id=old[0][-1],

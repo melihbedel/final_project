@@ -3,7 +3,7 @@ from starlette.responses import JSONResponse
 
 from common.auth import get_user_or_raise_401
 from data.models import RegisterDataCompany, LoginData
-from data.company_info import CompanyInfo
+from data.company_info import CompanyInfo, CompanyInfoForEdit
 from routers import helpers
 from routers.helpers import username_exists
 from services import companies_service, login_service
@@ -54,7 +54,7 @@ def get_info(x_token: str = Header(default=None)):
 
 
 @companies_router.put('/edit')
-def edit_company(new_company_info: CompanyInfo, x_token: str = Header(default=None)):
+def edit_company(new_company_info: CompanyInfoForEdit, x_token: str = Header(default=None)):
 
     if x_token == None:
         raise HTTPException(status_code=401,
