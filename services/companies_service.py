@@ -1,6 +1,5 @@
 from data.database import insert_query, read_query, update_query
-from data.models import Company
-from data.company_info import CompanyInfo, CompanyInfoForEdit
+from data.company import CompanyInfo, CompanyInfoForEdit, Company, JobAds
 
 
 def create_company(name: str, login_id):
@@ -30,7 +29,6 @@ def company_info(id: int):
 
 
 def edit_companies(old: CompanyInfoForEdit, new: CompanyInfoForEdit):
-    print(old)
     edited_company = CompanyInfo(
         id=old[0][-1],
         description=new.description,
@@ -45,3 +43,24 @@ def edit_companies(old: CompanyInfoForEdit, new: CompanyInfoForEdit):
          edited_company.id))
 
     return edited_company
+
+
+def create_job_ad(job: JobAds, id: int):
+    data = insert_query(
+        '''INSERT INTO job_ads (salary_min, salary_max, description, location, status, company_id) 
+        VALUES(?,?,?,?,?,?)''',
+        (job.salary_min, job.salary_max, job.description, job.location, job.status, id))
+
+    return JobAds(id=data, salary_min=job.salary_min, salary_max=job.salary_max, description=job.description,
+                  location=job.location, status=job.status)
+
+
+def counter_active_stat(id, stat: int = 1):
+    data = read_query('''SELECT COUNT(*) FROM job_ads WHERE company_id= ? AND status= ?''',
+                      (id, stat))
+    return data[0][0]
+
+
+def update_info_status(stat: int, id: int):
+    update_query('''UPDATE company_info SET job_ads = ? WHERE companies_id = ?''',
+                 (stat, id))

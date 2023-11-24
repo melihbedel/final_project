@@ -1,6 +1,12 @@
 from pydantic import BaseModel
 
 
+class Company(BaseModel):
+    id: int or None = None
+    name: str
+    login_id1: int
+
+
 class CompanyInfo(BaseModel):
     id: int or None = None
     description: str
@@ -11,6 +17,14 @@ class CompanyInfo(BaseModel):
     matches: int or None = None  # number of matches!!!!
 
 
+class RegisterDataCompany(BaseModel):
+    id: int or None = None
+    username: str
+    password: str
+    name: str
+    type: int = 1
+
+
 class CompanyInfoForEdit(BaseModel):
     id: int or None = None
     description: str
@@ -18,14 +32,14 @@ class CompanyInfoForEdit(BaseModel):
     contacts: str
     logo: str
 
-    @classmethod
-    def from_query_result1(cls, id, description, location, contacts, logo, job_ads, matches):
-        return cls(
-            id=id,
-            description=description,
-            location=location,
-            contacts=contacts,
-            logo=logo,
-            job_ads=job_ads,
-            matches=matches
-        )
+
+class JobAds(BaseModel):
+    id: int or None = None
+    salary_min: int
+    salary_max: int
+    description: str
+    location: str
+    status: int
+
+
+

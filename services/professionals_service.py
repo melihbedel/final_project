@@ -10,27 +10,26 @@ def create_pro(first_name: str, last_name: str, login_id):
 
 
 def create_professional_info(ids):
-    data = insert_query('''INSERT INTO professional_info (pro_id) VALUES(?)''',
+    data = insert_query('''INSERT INTO professional_info (professionals_id) VALUES(?)''',
                         (ids,))
     return data
 
 
 def find_pro_id_by_username_id(id: int):
-    data = read_query('''SELECT id FROM professionals WERE login_id = ?''',
-                      id, )
+    data = read_query('''SELECT id FROM professionals WHERE login_id = ?''',
+                      (id,))
     return data[0][0]
 
 
 def pro_info(id: int):
     data = read_query(
-        '''SELECT summary, location, status, logo, professional_id FROM professional_info WHERE professional_id = ?''',
+        '''SELECT summary, location, status, logo, professionals_id FROM professional_info WHERE professionals_id = ?''',
         (id,))
 
     return data
 
 
 def edit_pro(old: ProfessionalInfo, new: ProfessionalInfo):
-    print(old)
     edited_company = ProfessionalInfo(
         id=old[0][-1],
         summary=new.summary,
