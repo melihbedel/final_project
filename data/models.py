@@ -7,9 +7,6 @@ class Company(BaseModel):
     login_id1: int
 
 
-
-
-
 class Professional(BaseModel):
     id: int or None = None
     first_name: str
@@ -34,6 +31,14 @@ class RegisterDataProfessional(BaseModel):
     type: int = 0
 
 
+class ProfessionalInfo(BaseModel):
+    id: int or None = None
+    summary: str
+    location: str
+    status: int
+    logo: str
+
+
 class LoginData(BaseModel):
     id: int or None = None
     username: str
@@ -54,5 +59,3 @@ class LoginDataForToken(BaseModel):
             password=password,
             type=type
         )
-
-

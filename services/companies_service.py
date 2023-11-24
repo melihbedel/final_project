@@ -23,7 +23,7 @@ def find_company_id_by_username_id(ids: int):
 
 
 def company_info(id: int):
-    data = read_query('''SELECT description, location, contacts, logo, job_ads, matches, companies_id  FROM 
+    data = read_query('''SELECT description, location, contacts, logo, job_ads, matches, companies_id FROM 
     company_info WHERE companies_id = ?''',
                       (id,))
     return data
