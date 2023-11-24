@@ -5,6 +5,9 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
 -- Schema final_project
 -- -----------------------------------------------------
 
@@ -25,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `final_project`.`login_users` (
   PRIMARY KEY (`login_user_id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 48
+AUTO_INCREMENT = 53
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -44,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `final_project`.`companies` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 12
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -64,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `final_project`.`professionals` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -128,21 +132,20 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `final_project`.`company_info`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `final_project`.`company_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `companies_id` INT(11) NOT NULL,
   `description` VARCHAR(45) NULL DEFAULT NULL,
   `location` VARCHAR(45) NULL DEFAULT NULL,
   `contacts` VARCHAR(45) NULL DEFAULT NULL,
   `logo` BLOB NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_company_info_companies1_idx` (`companies_id` ASC) VISIBLE,
+  `job_ads` INT(11) NULL DEFAULT NULL,
+  `matches` INT(11) NULL DEFAULT NULL,
+  `companies_id` INT(11) NOT NULL,
+  PRIMARY KEY (`companies_id`),
   CONSTRAINT `fk_company_info_companies1`
     FOREIGN KEY (`companies_id`)
     REFERENCES `final_project`.`companies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -156,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `final_project`.`job_ads` (
   `salary_max` INT(11) NULL DEFAULT NULL,
   `description` VARCHAR(45) NULL DEFAULT NULL,
   `location` VARCHAR(45) NULL DEFAULT NULL,
-  `status` TINYINT(1) NULL DEFAULT NULL,
+  `status` TINYINT(1) NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_job_ads_companies1_idx` (`company_id` ASC) VISIBLE,
   CONSTRAINT `fk_job_ads_companies1`
@@ -165,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `final_project`.`job_ads` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = utf8mb4;
 
 
@@ -192,31 +196,10 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `final_project`.`professional_info`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `final_project`.`professional_info` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `professionals_id` INT(11) NOT NULL,
-  `summary` VARCHAR(45) NULL DEFAULT NULL,
-  `location` VARCHAR(45) NULL DEFAULT NULL,
-  `status` TINYINT(1) NULL DEFAULT NULL,
-  `logo` BLOB NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_professional_info_professionals1_idx` (`professionals_id` ASC) VISIBLE,
-  CONSTRAINT `fk_professional_info_professionals1`
-    FOREIGN KEY (`professionals_id`)
-    REFERENCES `final_project`.`professionals` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
 -- Table `final_project`.`match_requests`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `final_project`.`match_requests` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `job_ad_id` INT(11) NOT NULL,
   `company_ad_id` INT(11) NOT NULL,
   `company_match` TINYINT(1) NOT NULL,
@@ -225,17 +208,38 @@ CREATE TABLE IF NOT EXISTS `final_project`.`match_requests` (
   PRIMARY KEY (`id`),
   INDEX `fk_match_requests_job_ads1_idx` (`job_ad_id` ASC) VISIBLE,
   INDEX `fk_match_requests_company_ads1_idx` (`company_ad_id` ASC) VISIBLE,
-  CONSTRAINT `fk_match_requests_job_ads1`
-    FOREIGN KEY (`job_ad_id`)
-    REFERENCES `final_project`.`job_ads` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_match_requests_company_ads1`
     FOREIGN KEY (`company_ad_id`)
     REFERENCES `final_project`.`company_ads` (`id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_match_requests_job_ads1`
+    FOREIGN KEY (`job_ad_id`)
+    REFERENCES `final_project`.`job_ads` (`id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `final_project`.`professional_info`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `final_project`.`professional_info` (
+  `summary` VARCHAR(45) NULL DEFAULT NULL,
+  `location` VARCHAR(45) NULL DEFAULT NULL,
+  `status` TINYINT(1) NULL DEFAULT NULL,
+  `logo` BLOB NULL DEFAULT NULL,
+  `professionals_id` INT(11) NOT NULL,
+  PRIMARY KEY (`professionals_id`),
+  INDEX `fk_professional_info_professionals1_idx` (`professionals_id` ASC) VISIBLE,
+  CONSTRAINT `fk_professional_info_professionals1`
+    FOREIGN KEY (`professionals_id`)
+    REFERENCES `final_project`.`professionals` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
