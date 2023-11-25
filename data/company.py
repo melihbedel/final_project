@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from enum import Enum
 
 
 class Company(BaseModel):
@@ -33,6 +34,15 @@ class CompanyInfoForEdit(BaseModel):
     logo: str
 
 
+class JobAdsReturn(BaseModel):
+    id: int or None = None
+    salary_min: int
+    salary_max: int
+    description: str
+    location: str
+    status: str = 'Active'
+
+
 class JobAds(BaseModel):
     id: int or None = None
     salary_min: int
@@ -42,4 +52,28 @@ class JobAds(BaseModel):
     status: int
 
 
+class JobAdsReturn(BaseModel):
+    id: int or None = None
+    salary_min: int
+    salary_max: int
+    description: str
+    location: str
 
+
+
+    @classmethod
+    def from_query_result1(cls, id, company_id, salary_min, salary_max, description, location, status):
+        return cls(
+            id=id,
+            company_id=company_id,
+            salary_min=salary_min,
+            salary_max=salary_max,
+            description=description,
+            location=location,
+            status=status
+        )
+
+
+class Status(str, Enum):
+    active = "Active"
+    archived = "Archived"

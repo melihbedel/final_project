@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Response, Header, HTTPException
+from fastapi import APIRouter, Response, Header, HTTPException, Query
 from starlette.responses import JSONResponse
 
 from common.auth import get_user_or_raise_401
-from data.company import RegisterDataCompany, CompanyInfoForEdit, JobAds
+from data.company import RegisterDataCompany, CompanyInfoForEdit, JobAds, Status
 from routers.helpers import username_exists
 from services import companies_service, login_service
 
@@ -87,3 +87,22 @@ def crate_job_ads(job: JobAds, x_token: str = Header(default=None)):
     return Response(status_code=200, content=f'Success create job add!')
 
 
+@companies_router.get('/companies_jobs_ads')
+def get_something(data: Status = Status.active, x_token: str = Header(default=None)):
+    if x_token == None:
+        raise HTTPException(status_code=401,
+                            detail='You must be logged in')
+
+    user = get_user_or_raise_401(x_token)
+
+    if user.type != 1:
+        raise HTTPException(status_code=401,
+                            detail='Only company can view Job ads!')
+
+    companies_id = companies_service.find_company_id_by_username_id(user.id)
+    if data.value == "Active":
+        status = 1
+        return companies_service.view_status(companies_id, status)
+    else:
+        status = 0
+        return companies_service.view_status(companies_id, status)

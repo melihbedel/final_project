@@ -1,5 +1,5 @@
 from data.database import insert_query, read_query, update_query
-from data.company import CompanyInfo, CompanyInfoForEdit, Company, JobAds
+from data.company import CompanyInfo, CompanyInfoForEdit, Company, JobAds, JobAdsReturn
 
 
 def create_company(name: str, login_id):
@@ -64,3 +64,11 @@ def counter_active_stat(id, stat: int = 1):
 def update_info_status(stat: int, id: int):
     update_query('''UPDATE company_info SET job_ads = ? WHERE companies_id = ?''',
                  (stat, id))
+
+
+def view_status(id: int, status: int):
+    data = read_query('''SELECT * FROM job_ads WHERE company_id = ? AND status = ?''',
+                      (id, status))
+    print(data)
+    return (JobAdsReturn.from_query_result1(*row) for row in data)
+
