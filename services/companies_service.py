@@ -72,3 +72,27 @@ def view_status(id: int, status: int):
     print(data)
     return (JobAdsReturn.from_query_result1(*row) for row in data)
 
+
+def view_job_ad_by_id(id: int, companies_id: int):
+    data = read_query('''SELECT * FROM job_ads WHERE company_id = ? AND id = ?''',
+                      (companies_id, id))
+
+    return next((JobAds.from_query_result2(*row) for row in data), None)
+
+
+def edit_jobs_ads(old: JobAds, new: JobAds):
+    edited_jobs_ads = JobAdsReturn(
+        id=old.id,
+        salary_min=new.salary_min,
+        salary_max=new.salary_max,
+        description=new.description,
+        location=new.location,
+
+    )
+
+    update_query(
+        '''UPDATE job_ads SET salary_min = ?, salary_max = ?, description = ?, location = ? WHERE id = ?''',
+        (edited_jobs_ads.salary_min, edited_jobs_ads.salary_max, edited_jobs_ads.description, edited_jobs_ads.location,
+         edited_jobs_ads.id))
+
+    return edited_jobs_ads
