@@ -1,5 +1,5 @@
 from data.database import insert_query, read_query, update_query
-from data.models import Professional, ProfessionalInfo
+from data.models import Professional, ProfessionalInfo, CompanyAds
 
 
 def create_pro(first_name: str, last_name: str, login_id):
@@ -44,3 +44,59 @@ def edit_pro(old: ProfessionalInfo, new: ProfessionalInfo):
          edited_company.id))
 
     return edited_company
+
+
+def view_company_ads(pro_id: int):
+    data = read_query('''SELECT * from company_ads WHERE professional_id = ?''',
+                      (pro_id,))
+
+    return (CompanyAds.from_query_result1(*row) for row in data)
+
+
+def create_company_ads(company: CompanyAds, pro_id: int):
+    data = insert_query(
+        '''INSERT INTO company_ads (salary_min, salary_max, description, location, status, professional_id) 
+        VALUES(?,?,?,?,?,?)''',
+        (company.salary_min, company.salary_max, company.description, company.location, company.status, pro_id))
+    return CompanyAds(id=data, salary_min=company.salary_min, salary_max=company.salary_max,
+                      description=company.description,
+                      location=company.location, status=company.status)
+
+
+def view_pro_ad_by_id(id: int, pro_id: int):
+    data = read_query('''SELECT * FROM company_ads WHERE professional_id = ? AND id = ?''',
+                      (pro_id, id))
+
+    return next((CompanyAds.from_query_result(*row) for row in data), None)
+
+
+def counter_active_stat(pro_id: int, stat="active"):
+    data = read_query('''SELECT COUNT(*) FROM company_ads WHERE professional_id= ? AND status= ?''',
+                      (pro_id, stat))
+    return data[0][0]
+
+
+def update_pro_info(stat, pro_id):
+    update_query('''UPDATE professional_info SET status = ? WHERE professionals_id = ?''',
+                 (stat, pro_id))
+
+
+def edit_pro_ads(old: CompanyAds, new: CompanyAds):
+    edited_company_ads = CompanyAds(
+        id=old.id,
+        salary_min=new.salary_min,
+        salary_max=new.salary_max,
+        description=new.description,
+        location=new.location,
+        status=new.status
+
+    )
+
+    update_query(
+        '''UPDATE company_ads SET salary_min = ?, salary_max = ?, description = ?, location = ?, status = ? WHERE id 
+        = ?''',
+        (edited_company_ads.salary_min, edited_company_ads.salary_max, edited_company_ads.description,
+         edited_company_ads.location, edited_company_ads.status,
+         edited_company_ads.id))
+
+    return edited_company_ads

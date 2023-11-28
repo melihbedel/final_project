@@ -45,3 +45,24 @@ class LoginDataForToken(BaseModel):
             password=password,
             type=type
         )
+
+
+class CompanyAds(BaseModel):
+    id: int or None = None
+    salary_min: int
+    salary_max: int
+    description: str
+    location: str
+    status: str
+
+    @classmethod
+    def from_query_result(cls, id, company_id, salary_min, salary_max, description, location, status):
+        return cls(
+            id=id,
+            company_id=company_id,
+            salary_min=salary_min,
+            salary_max=salary_max,
+            description=description,
+            location=location,
+            status=status
+        )
