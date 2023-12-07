@@ -19,14 +19,3 @@ class DisplaySkill(BaseModel):
     skill: str
     level: str
 
-
-class IdAndType(BaseModel):
-    id: int or None = None
-    type: int
-
-    @classmethod
-    def from_query_result(cls, id, type):
-        return cls(
-            id=id,
-            type=type,
-        )

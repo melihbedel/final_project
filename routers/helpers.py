@@ -8,8 +8,11 @@ def username_exists(username):
     return bool(data)
 
 
-def username_exists_type(username):
-    data = read_query('''SELECT username type FROM login_users WHERE username = ? AND type = 0''',
+def username_exists_type(username, type):
+    if type == 1:
+        data = read_query(f'''SELECT username type FROM login_users WHERE username = ? AND type = {type}''',
+                      (username,))
+    data = read_query(f'''SELECT username type FROM login_users WHERE username = ? AND type = {type}''',
                       (username,))
 
     return bool(data)
