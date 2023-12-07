@@ -1,4 +1,8 @@
+from enum import Enum
+
 from pydantic import BaseModel
+
+from data.skill_model import DisplaySkill
 
 
 class Professional(BaseModel):
@@ -21,7 +25,14 @@ class ProfessionalInfo(BaseModel):
     id: int or None = None
     summary: str
     location: str
-    status: int
+    status: str
+    logo: str
+
+
+class ProfessionalInfoForEdit(BaseModel):
+    id: int or None = None
+    summary: str
+    location: str
     logo: str
 
 
@@ -56,7 +67,7 @@ class CompanyAds(BaseModel):
     status: str
 
     @classmethod
-    def from_query_result(cls, id, company_id, salary_min, salary_max, description, location, status):
+    def from_query_result(cls, id, company_id, salary_min, salary_max, description, location, status, skills=[]):
         return cls(
             id=id,
             company_id=company_id,
@@ -64,5 +75,26 @@ class CompanyAds(BaseModel):
             salary_max=salary_max,
             description=description,
             location=location,
-            status=status
+            status=status,
+            skills=skills
         )
+
+
+class CompanyAdsForCreate(BaseModel):
+    id: int or None = None
+    salary_min: int
+    salary_max: int
+    description: str
+    location: str
+
+
+class StatusForPro(str, Enum):
+    Active = "active"
+    Busy = "busy"
+
+
+class CompanyAdsStatus(str, Enum):
+    ACTIVE = 'Active'
+    HIDDEN = 'Hidden'
+    PRIVATE = 'Private'
+    MATCHED = 'Matched'

@@ -2,7 +2,9 @@ from fastapi import APIRouter, Response, Header, HTTPException, Query
 from starlette.responses import JSONResponse
 
 from common.auth import get_user_or_raise_401
-from data.company import RegisterDataCompany, CompanyInfoForEdit, JobAds, Status,JobAdsReturn
+from data.company import RegisterDataCompany, CompanyInfoForEdit, JobAds, Status, JobAdsReturn
+from data.professional_model import StatusForPro
+from data.skill_model import CreateSkill, SkillLevel
 from routers.helpers import username_exists
 from services import companies_service, login_service
 
@@ -149,3 +151,9 @@ def edit_job_ad(new_job_ad: JobAds, ids: int = Query(), x_token: str = Header(de
                             detail='You must be insert valid id')
 
     return companies_service.edit_jobs_ads(old_job_ad, new_job_ad)
+
+
+
+
+
+

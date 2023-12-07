@@ -1,5 +1,6 @@
 from data.database import insert_query, read_query, update_query
 from data.company import CompanyInfo, CompanyInfoForEdit, Company, JobAds, JobAdsReturn
+from data.skill_model import DisplaySkill, CreateSkill
 
 
 def create_company(name: str, login_id):
@@ -96,3 +97,14 @@ def edit_jobs_ads(old: JobAds, new: JobAds):
          edited_jobs_ads.id))
 
     return edited_jobs_ads
+
+
+def create_skill_com(skill: str, level: str):
+
+    data = insert_query('''INSERT INTO skills (skill, level) VALUES(?,?)''',
+                        (skill, level))
+
+    return DisplaySkill(id=data, skill=skill, level=level)
+
+
+

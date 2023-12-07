@@ -1,17 +1,12 @@
 import jwt
 from data.database import read_query
-from data.models import LoginDataForToken
+from data.professional_model import LoginDataForToken
 from fastapi import HTTPException
 
 _JWT_SECRET = ';a3,jhsd1jahe3sd1k3vsfjhas1kv3fsjdh'
 
 
 def get_user_or_raise_401(token: str) -> LoginDataForToken:
-    ''' Authenticates the given token in Header and finds the whole information of the user through its username:
-
-    Args:
-        - token (str): text with indents
-    '''
 
     try:
         payload = is_authenticated(token)

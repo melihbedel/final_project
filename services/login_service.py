@@ -1,6 +1,6 @@
 from common.auth import find_by_username
 from data.database import insert_query
-from data.models import LoginData
+from data.professional_model import LoginData
 
 
 def create_login(username: str, password: str, type) -> LoginData | None:

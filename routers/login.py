@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from common.auth import create_token
-from data.models import LoginData
+from data.professional_model import LoginData
 from services import login_service
 
 login_router = APIRouter(prefix='/login', tags=['login'])
