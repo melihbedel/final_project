@@ -1,20 +1,21 @@
 from mariadb import connect
 from mariadb.connections import Connection
 
-from db_password import my_password
-
 
 def _get_connection() -> Connection:
+    ''' Connects to the database through MariaDB.'''
+    
     return connect(
         user='root',
-        password=my_password,
-        host='localhost',
+        password='1234',
+        host='127.0.0.1',
         port=3306,
         database='final_project'
     )
 
 
 def read_query(sql: str, sql_params=()):
+    "No results = [ ]"
     with _get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(sql, sql_params)
@@ -37,4 +38,13 @@ def update_query(sql: str, sql_params=()) -> bool:
         cursor.execute(sql, sql_params)
         conn.commit()
 
-        return cursor.rowcount > 0
+        return cursor.rowcount
+
+
+def read_query_additional(sql: str, sql_params=()):
+    """No results = None"""
+    with _get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(sql, sql_params)
+
+        return cursor.fetchone()
